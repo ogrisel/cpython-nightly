@@ -6,7 +6,7 @@ pool:
 
 steps:
 - bash: git clone --depth 1 https://github.com/python/cpython.git
-  displayName: 'git clone cpython master branch'
+  displayName: 'Fetch CPython master branch'
 
 - bash: |
     set -e
@@ -14,27 +14,26 @@ steps:
     echo "deb-src http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted" | sudo tee -a /etc/apt/sources.list
     sudo apt update
     sudo apt build-dep python3.6
-  displayName: 'Install CPython build dependeices for Ubuntu 18.04'
+  displayName: 'Install CPython build dependencies for Ubuntu 18.04'
 
 - bash: |
     set -e
+    WORKDIR=`pwd`
     pushd cpython
-    ./configure --prefix $PIPELINE_WORKSPACE/cpython-nightly --with-lto
+    ./configure --prefix $WORKDIR/cpython-nightly --with-lto
     make -j4
     make install
     popd
-  displayName: 'Install CPython build dependeices for Ubuntu 16.04'
+  displayName: 'Configure and build CPython'
 
 - bash: ./cpython-nightly/bin/python -m pip install -U pip setuptools
   displayName: 'Update pip and setuptools'
 
-- bash: |
-    set -e
-    tar cf cpython-nightly.tar.xz cpython-nightly
+- bash: tar cf cpython-nightly.tar.xz cpython-nightly
   displayName: 'Prepare compressed archive'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
+    targetPath: 'cpython-nightly.tar.xz'
     artifact: 'cpython-nightly.tar.xz'
     publishLocation: 'pipeline'
