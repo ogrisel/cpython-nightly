@@ -42,7 +42,8 @@ steps:
 
 - task: GitHubRelease@1
   inputs:
-    gitHubConnection: 'release-upload'
+    gitHubConnection: 'ogrisel'
+    repositoryName: '$(Build.Repository.Name)'
     action: 'edit'
     target: '$(Build.SourceVersion)'
     tag: 'nightly'
