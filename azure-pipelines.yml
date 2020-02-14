@@ -8,7 +8,10 @@ steps:
 - bash: git clone --depth 1 https://github.com/python/cpython.git
   displayName: 'git clone cpython master branch'
 
-- bash: apt build-dep python3.6
+- bash: |
+    set -e
+    sudo apt update
+    sudo apt build-dep python3.6
   displayName: 'Install CPython build dependeices for Ubuntu 16.04'
 
 - bash: |
