@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/ogrisel2/cpython-nightly/_apis/build/status/ogrisel.cpython-nightly?branchName=master)](https://dev.azure.com/ogrisel2/cpython-nightly/_build/latest?definitionId=4&branchName=master)
+
 # cpython-nightly
 
 **Experimental warning!** (see below):
