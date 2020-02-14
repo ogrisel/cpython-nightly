@@ -43,9 +43,6 @@ steps:
     popd
   displayName: 'Symlink python3 to python, update pip and setuptools'
 
-- bash: mkdir cpython-nightly
-  displayName: 'Prepare empty test folder'
-
 - bash: tar cf cpython-nightly.tar.xz cpython-nightly
   displayName: 'Prepare compressed archive'
 
