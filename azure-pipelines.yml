@@ -18,22 +18,25 @@ steps:
 
 - bash: |
     set -e
-    WORKDIR=`pwd`
     pushd cpython
-    ./configure --prefix $WORKDIR/cpython-nightly --with-lto
+    ./configure --prefix `pwd`/cpython-nightly --with-lto
     make -j4
     make install
     popd
   displayName: 'Configure and build CPython'
 
-- bash: ./cpython-nightly/bin/python -m pip install -U pip setuptools
+- bash: ./cpython/cpython-nightly/bin/python -m pip install -U pip setuptools
   displayName: 'Update pip and setuptools'
 
-- bash: tar cf cpython-nightly.tar.xz cpython-nightly
+- bash: |
+    set -e
+    pushd cpython
+    tar cf cpython-nightly.tar.xz cpython-nightly
+    popd
   displayName: 'Prepare compressed archive'
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: 'cpython-nightly.tar.xz'
+    targetPath: 'cpython/cpython-nightly.tar.xz'
     artifact: 'cpython-nightly.tar.xz'
     publishLocation: 'pipeline'
