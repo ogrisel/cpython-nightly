@@ -49,7 +49,12 @@ steps:
 - bash: conda install -q -y anaconda-client
   displayName: Install anaconda-client
 
-- bash: anaconda -t $TOKEN upload --force -u ogrisel *.tar.xz
+- bash: |
+    anaconda -t $TOKEN upload
+      --force -u ogrisel -t file -p cpython-nightly -v nightly \
+      -d "CPython nightly build" \
+      -s "CPython nightly build" \
+      cpython-nightly.tar.xz
   displayName: Upload to anaconda.org
   env:
     # Secret variables need to mapped to env variables explicitly:
