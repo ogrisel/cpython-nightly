@@ -37,8 +37,16 @@ steps:
 - bash: tar cf cpython-nightly.tar.xz cpython-nightly
   displayName: 'Prepare compressed archive'
 
-- task: PublishPipelineArtifact@1
+- task: GitHubRelease@1
   inputs:
-    targetPath: 'cpython-nightly.tar.xz'
-    artifact: 'cpython-nightly.tar.xz'
-    publishLocation: 'pipeline'
+    gitHubConnection: ${{ parameters.github }}
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: 'nightly'
+    title: 'Nightly build of CPython master branch'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: 'This archive is updated every night around 2 AM UTC. It should work with Ubuntu 18.04 on amd64.'
+    assets: '$(System.DefaultWorkingDirectory)/*.tar.xz'
+    assetUploadMode: 'replace'
+    isPreRelease: true
+    addChangeLog: false
