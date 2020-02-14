@@ -40,17 +40,17 @@ steps:
 - bash: tar cf cpython-nightly.tar.xz cpython-nightly
   displayName: 'Prepare compressed archive'
 
-- task: GitHubRelease@1
-  inputs:
-    gitHubConnection: 'ogrisel'
-    repositoryName: 'ogrisel/cpython-nightly'
-    action: 'edit'
-    target: '$(Build.SourceVersion)'
-    tag: 'nightly'
-    title: 'Nightly build of CPython master branch'
-    releaseNotesSource: 'inline'
-    releaseNotesInline: 'This archive is updated every night around 2 AM UTC. It should work with Ubuntu 18.04 on amd64.'
-    assets: '$(System.DefaultWorkingDirectory)/*.tar.xz'
-    assetUploadMode: 'replace'
-    isPreRelease: true
-    addChangeLog: false
+- bash: |
+    set -e
+    echo "##vso[task.prependpath]$CONDA/bin"
+    sudo chown -R $USER $CONDA
+  displayName: Add conda to PATH
+
+- bash: conda install -q -y anaconda-client
+  displayName: Install anaconda-client
+
+- bash: anaconda -t $TOKEN upload --force -u ogrisel *.tar.xz
+  displayName: Upload to anaconda.org
+  env:
+    # Secret variables need to mapped to env variables explicitly:
+    TOKEN: $(CPYTHON_NIGHTLY_UPLOAD_TOKEN)
