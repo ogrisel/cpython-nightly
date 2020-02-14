@@ -42,7 +42,7 @@ steps:
 
 - task: GitHubRelease@1
   inputs:
-    gitHubConnection: 'github.ogrisel'
+    gitHubConnection: 'github.com_ogrisel'
     repositoryName: 'ogrisel/cpython-nightly'
     action: 'edit'
     target: '$(Build.SourceVersion)'
