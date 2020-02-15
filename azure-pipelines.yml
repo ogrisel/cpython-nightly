@@ -57,7 +57,7 @@ steps:
 
 - bash: |
     anaconda -t $TOKEN upload \
-      -u ogrisel -f -t file -p cpython-nightly -v nightly \
+      -u ogrisel --force -t file -p cpython-nightly -v nightly \
       -d "CPython nightly build" \
       -s "CPython nightly build" \
       cpython-nightly.tar.xz
